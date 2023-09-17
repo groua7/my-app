@@ -95,8 +95,20 @@
     margin-right: 400px;
     cursor: pointer; 
 }
-    </style>
 
+.submit-button {
+    font-size: 20px;
+    margin-left: 885px;
+    margin-top: 40px;
+    background-color: rgb(199, 67, 33);
+    border-radius: 15px;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    cursor: pointer;
+    width: 145px;
+}
+    </style>
 <body>
        
 <input class="input-bar" type="text" placeholder="Search">
@@ -127,5 +139,10 @@
 <input class="first-bar" type="text" placeholder="First Name">
 <input class="last-bar" type="text" placeholder="Last Name">
 <input class="email-bar" type="text" placeholder="email">
+
+<p class="submit-button">
+  SUBMIT NOW
+</p>
+
 </body>
 </html>
