@@ -1,0 +1,5 @@
+# make it as simple as possible
+# set NGINX as base image
+# AUTHOR = Degbe
+FROM nginx
+COPY index.html /usr/share/nginx/html
