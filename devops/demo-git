@@ -49,3 +49,4 @@ git push origin feature-branch-name
 This will make your feature branch available in the remote repository.
 
 Now you have a feature branch with your additional development that won't affect the master branch until you decide to merge your changes. You can continue working on this branch and, when ready, merge it back into the master branch through a pull request or merge operation.
+life will always be better!
