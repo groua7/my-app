@@ -1,0 +1,10 @@
+#this is a command to find a fixed string in index.html
+# using grep command in linux
+
+grep -Fq "FUTURE" index.html
+
+if [ $? -eq 0 ]; then
+  echo "String 'FUTURE' found in index.html"
+else
+  echo "String 'FUTURE' not found in index.html"
+fi
