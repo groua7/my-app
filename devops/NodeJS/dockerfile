@@ -1,0 +1,14 @@
+# Node.js as base image
+FROM node:14
+
+# Our working directory 
+WORKDIR /usr/src/app
+
+# Let's copy the main.js
+COPY main.js .
+
+# Expose port 8080
+EXPOSE 8080
+# it is recommended to use less command as much as possible to make the dockefile very light
+# Command to run the application
+CMD ["node", "main.js"]
