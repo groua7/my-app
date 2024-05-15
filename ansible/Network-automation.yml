@@ -1,0 +1,48 @@
+[cisco_routers]
+router1 ansible_host=192.168.1.1
+router2 ansible_host=192.168.1.2
+
+[all:vars]
+ansible_user=your_username
+ansible_password=your_password
+ansible_network_os=cisco.ios
+ansible_connection=network_cli
+
+
+
+
+
+MY-PLAYBOOK
+
+
+---
+- name: Configure OSPF on Cisco Routers
+  hosts: cisco_routers
+  gather_facts: no
+
+  tasks:
+    - name: Ensure OSPF is enabled
+      cisco.ios.ios_config:
+        lines:
+          - router ospf 1
+          - network 10.0.0.0 0.255.255.255 area 0
+          - network 192.168.1.0 0.0.0.255 area 0
+        save_when: changed
+
+    - name: Verify OSPF Neighbors
+      cisco.ios.ios_command:
+        commands: show ip ospf neighbor
+      register: ospf_neighbors
+
+    - name: Display OSPF Neighbors
+      debug:
+        var: ospf_neighbors.stdout_lines
+
+    - name: Verify OSPF Routes
+      cisco.ios.ios_command:
+        commands: show ip route ospf
+      register: ospf_routes
+
+    - name: Display OSPF Routes
+      debug:
+        var: ospf_routes.stdout_lines
