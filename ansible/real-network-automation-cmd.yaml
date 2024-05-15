@@ -1,0 +1,29 @@
+ansible-playbook -i hosts configure_ospf.yml
+
+
+
+
+
+EXPLAINATION
+
+
+
+Inventory Configuration: The inventory file hosts specifies the routers and connection details. The ansible_network_os=cisco.ios sets the network module for Cisco IOS.
+
+Playbook Tasks:
+
+Enable OSPF:
+cisco.ios.ios_config module is used to apply the OSPF configuration.
+The lines parameter includes the necessary OSPF commands.
+The save_when: changed ensures the configuration is saved only if there are changes.
+Verify OSPF Neighbors:
+cisco.ios.ios_command module runs the show ip ospf neighbor command to check OSPF neighbors.
+The output is registered in the ospf_neighbors variable.
+Display OSPF Neighbors:
+The debug module prints the OSPF neighbors to the console.
+Verify OSPF Routes:
+cisco.ios.ios_command module runs the show ip route ospf command to verify OSPF routes.
+The output is registered in the ospf_routes variable.
+Display OSPF Routes:
+The debug module prints the OSPF routes to the console.
+Benefits
