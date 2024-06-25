@@ -1,0 +1,18 @@
+# RIP CONFIGURATION ###################
+
+- router rip
+version 2
+no auto-sammury
+network 10.0.0.0
+
+
+do sh ip route 
+debug ip rip
+crt+c
+undebug all
+do sh ip protocols
+
+do sh int br 
+do sh run | sec route
+do sh run | sec rip
+do sh ip rip database
