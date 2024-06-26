@@ -1,0 +1,142 @@
+Router(config)#interface GigabitEthernet 0/0
+Router(config-if)#mtu 1480
+Router(config-if)#ip mtu 1460
+
+
+# WHY THIS CINFIGURATION ?????
+
+
+
+
+MTU 1480 is for physical layer
+ip mtu is for the interface
+
+Example Scenario
+Consider a network where you have a VPN tunnel. The VPN adds a 20-byte header, 
+and you want to ensure that packets can traverse the tunnel without fragmentation:
+
+Physical MTU: Set to 1480 bytes to account for some potential Layer 2 overhead.
+IP MTU: Set to 1460 bytes to leave room for the 20-byte VPN header.
+This way, when an IP packet of 1460 bytes is sent, the VPN header is added, making 
+the total frame size 1480 bytes, which fits within the physical MTU.
+
+Summary
+Configuring both MTU values on the same interface ensures that you account for both Layer 2 
+and Layer 3 considerations. The physical MTU handles the overall frame size, including all headers,
+ while the IP MTU focuses on the size of IP packets to prevent fragmentation and ensure efficient network performance.
+
+
+
+ # POIN-TO-POINT CONFIGURATION  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+ ostname R6
+!
+interface FastEthernet0/0
+ip address 172.16.0.6 255.255.255.0
+no shutdown
+
+
+
+hostname R7
+!
+interface FastEthernet0/0
+ip address 172.16.0.7 255.255.255.0
+no shutdown
+
+
+
+hostname R8
+!
+interface FastEthernet0/0
+ip address 172.16.0.8 255.255.255.0
+no shutdown
+
+
+
+hostname R9
+!
+interface FastEthernet0/0
+ip address 172.16.0.9 255.255.255.0
+no shutdown
+
+
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+# HOW TO CONFIGURE ????????????????????????
+DR / BDR     PRIORITY CMD
+
+
+SettingOSPF Priority
+
+R1(config)#interface FastEthernet 0/0
+R1(config-if)#ip ospf priority 100
+
+R4(config)#interface FastEthernet 0/0
+R4(config-if)#ip ospf priority 0
+
+
+POINT-TO-POINT is a connection between only 2 router
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+VOICE VLAN CONFIGURATION
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+SW1(config)#interface FastEthernet 0/10
+SW1(config-interface)#description IP Phone
+SW1(config-interface)#switchport mode access
+SW1(config-interface)#switchport access vlan 10
+SW1(config-interface)#switchport voice vlan 20
+
+
+############################################################
+# TRUNK 802.1Q CONFIGURATION -- 
+# FOR MULTIPLE VLAN (   INTERFACES BETWEEN 2 SW )
+############################################################
+
+
+
+SW1(config)#interface FastEthernet 0/24
+SW1(config-interface)#description Trunk to SW2
+SW1(config-interface)#switchport trunk encapsulation dot1q
+SW1(config-interface)#switchport mode trunk
+
+
+
+
+$$$$$$$$$$$$$$
+# NATIVE VILAN CONFIGURATION 
+$$$$$$$$$$$$$$
+
+SW1(config)#vlan 199
+SW1(config-vlan)#name Native
+
+SW1(config)#interface GigabitEthernet 0/1
+SW1(config-interface)#description Trunk to SW2
+SW1(config-interface)#switchport trunk encapsulation dot1q
+SW1(config-interface)#switchport mode trunk
+SW1(config-interface)#switchport trunk native vlan 199
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+# ALLOWED VLAN CONFIGURATION 
+# for security reason
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+SW1(config)#interface GigabitEthernet 0/1
+SW1(config-if)#switchport trunk allowed vlan 10,30
+
+
+
+
+
+************
+# DIFFERENT COMMANDS :
+
+SW1#show interface gig0/1 switchport
