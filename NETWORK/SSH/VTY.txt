@@ -1,0 +1,54 @@
+
+The line vty 0 4 command refers to virtual terminal lines (VTY lines) on a Cisco device, which are used 
+for remote access such as Telnet or SSH.
+
+Here's a breakdown of what line vty 0 4 means:
+
+line vty: This specifies the virtual terminal lines, which are logical lines used for remote login sessions.
+VTY lines allow you to connect 
+to the router or switch remotely using protocols like SSH or Telnet.
+
+0 4: This defines the range of VTY lines being configured. In this case, 0 4 represents 5 VTY lines (lines 0 through 4).
+Most Cisco routers and switches come with 5 default VTY lines (0 to 4), meaning up to 5 remote users can connect
+to the device simultaneously.
+
+In short:
+VTY lines enable remote access to a router or switch.
+0 4 means you are configuring the first 5 virtual lines (from 0 to 4), allowing up to 5 concurrent remote login sessions.
+When you enter line vty 0 4, any configuration commands you apply afterward (such as enabling SSH access) will 
+apply to all VTY lines in that range, meaning remote users connecting to any of those lines will follow the same access rules.
+
+For example:
+
+bash
+Copy code
+line vty 0 4
+ login local
+ transport input ssh
+
+This ensures that all VTY lines (0 to 4) will require local login and only accept SSH connections.
+
+
+
+#### SIMPLE WAY TO CONFIGURE SSH IN CISCO ROUTER OR SW
+
+
+Router(config)# hostname MyRouter
+MyRouter(config)# ip domain-name example.com
+MyRouter(config)# crypto key generate rsa
+How many bits in the modulus [512]: 2048
+MyRouter(config)# username admin privilege 15 secret StrongPassword123
+MyRouter(config)# ip ssh version 2
+
+
+MyRouter(config)# line vty 0 4
+MyRouter(config-line)# login local
+MyRouter(config-line)# transport input ssh
+MyRouter(config-line)# exit
+MyRouter(config)# ip ssh time-out 60
+MyRouter(config)# ip ssh authentication-retries 3
+
+
+MyRouter# show ip ssh
+
+
