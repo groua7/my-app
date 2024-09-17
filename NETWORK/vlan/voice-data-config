@@ -1,0 +1,13 @@
+# THIS IS HOW YOU CAN CONFIGURE VOICE VLAN AND DATA ( END USER ) 
+TOGETHER IN THE SAME INTERFACE . 
+
+
+
+
+Switch(config)# interface FastEthernet0/1
+Switch(config-if)# switchport mode access
+Switch(config-if)# switchport access vlan 10               # Assign Data VLAN (e.g., VLAN 10)
+Switch(config-if)# switchport voice vlan 20                # Assign Voice VLAN (e.g., VLAN 20)
+Switch(config-if)# spanning-tree portfast                  # Enable PortFast to speed up port transitions
+Switch(config-if)# mls qos trust dscp                      # Enable QoS and trust DSCP values from the phone
+Switch(config-if)# exit
