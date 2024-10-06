@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Welcome to the Super Big Lab web app. Explore, learn, and grow with us.">
+    <meta name="keywords" content="Super Big Lab, CCIE, technology, learning, networking, IT">
+    <meta name="author" content="Your Name">
+    <title>Welcome to Super Big Lab</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            animation: fadeIn 2s ease-in-out;
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #0078D7;
+            animation: pulse 1.5s infinite;
+        }
+        p {
+            font-size: 1.2em;
+            animation: slideUp 2s ease;
+        }
+        a {
+            display: inline-block;
+            text-decoration: none;
+            color: #0078D7;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: 2px solid #0078D7;
+            border-radius: 5px;
+            transition: all 0.3s ease-in-out;
+        }
+        a:hover {
+            background-color: #0078D7;
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Super Big Lab!</h1>
+        <p>Your go-to platform for networking, technology, and personal growth.</p>
+        <p>Explore our resources and begin your journey with us today.</p>
+        <a id="getStarted" href="#">Get Started</a>
+    </div>
+
+    <script>
+        // Get the link element
+        const getStartedBtn = document.getElementById('getStarted');
+
+        // Add click event to the button
+        getStartedBtn.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+
+            // Animate the container for exit effect
+            document.querySelector('.container').style.animation = 'fadeOut 1s forwards';
+
+            // Redirect to the new page after animation ends
+            setTimeout(function() {
+                window.location.href = 'https://demo.super-big-lab.com';
+            }, 1000); // 1 second delay for the fade-out effect
+        });
+
+        // Exit animation for container
+        const fadeOut = `
+        @keyframes fadeOut {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-30px); }
+        }`;
+        document.styleSheets[0].insertRule(fadeOut, 0);
+    </script>
+</body>
+</html>
