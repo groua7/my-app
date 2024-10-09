@@ -1,0 +1,575 @@
+HOW TO CONFIGURE AN IP ADDRESS IN VLAN1 , witch is SVI (Switched Virtual Interface)
+
+Switch(config)# interface vlan 1
+Switch(config-if)# ip address 192.168.0.10 255.255.255.0
+Switch(config-if)# no shutdown
+Switch(config-if)# exit
+Switch(config)# ip default-gateway 192.168.0.1
+
+show flash
+show version
+
+
+****
+
+A descriptive hostname makes it easier to identify the device.
+Eg. NY-F1-SW1
+
+Switch(config)# hostname SW1
+SW1(config)#
+***** 
+Interface descriptions can aid troubleshooting
+
+SW1(config)# interface FastEthernet 0/1
+SW1(config-if)# description Link to R1
+
+
+******* CDP and LLDP ****************
+
+Cisco Discovery Protocol (CDP) is a Cisco proprietary Layer 2 protocol.
+It is used to share information with other directly connected Cisco
+equipment, such as the operating system version and IP address.
+This aids in troubleshooting by allowing administrators to map out how
+Cisco devices are connected to each other.
+It is enabled by default on most Cisco equipment.
+It works at Layer 2 so it is not necessary for the device to have an IP
+address.
+
+CMD -------------------------------------CISCO DISCOVERY PROTOCOL 
+Switch(config)# cdp run
+Switch(config)# no cdp run
+Switch(config-if)# no cdp enable
+Switch# show cdp
+Switch# show cdp neighbors
+Switch# show cdp neighbors detail
+NB:: CDP RUN IS FOR ALL THE INTERFACES IN THAT DEVICE, CDP ENABLE IS FOR A SPECIFIC INTERFACE       !!!!!!!!!!!!!!!!
+
+
+LLDP -----------------------------------LINK LAYER DISCOVERY PROTOCOL 
+
+LLDP (Link Layer Discovery Protocol) is an open standard protocol which
+provides similar information to CDP.
+Differences with CDP:
+Depending on the switch and version it may be disabled by default
+It is only supported on physical interfaces
+It can only discover up to one device per port
+It can discover Linux servers
+
+Switch(config)# lldp run
+Switch(config)# no lldp run
+Switch(config-if)# no lldp transmit
+Switch(config-if)# no lldp receive
+Switch# show lldp
+Switch# show lldp neighbors
+Switch# show lldp neighbors detail
+
+
+
++++++++++ ROUTER CMD ++++++++++++++++
+
+enable
+conf t
+hostname R1 
+int g0/0   or give the correct int
+ip address 10.10.10.5 255.255.255.0
+no shutdown
+speed auto
+duplex auto
+enable secret admin123
+do wr
+
+
+
+
+FOR CONNECTIVITY ISSUE,      +++++ UP    UP                    ====> the interface is working well
+                                   UP    DOWN                  ===> speed mismatches 
+                                   DOWN      DOWN              ===> the cable not connected
+                                   ADMIN-LY DOWN     DOWN      ==>    you did not apply no shutdown  
+
+
+the CMD IS do show ip interface brief
+
+
+====================== SWITCH CMD ============================
+
+
+HOW TO CONFIGURE VLAN1 ??????
+
+
+enable 
+conf t
+hostname SW1 or give the correct name to the switch
+enable secret admin123 ====> to enable ensrypted secret.................................
+int vlan1
+ip address 10.10.10.4 255.255.255.0 
+no shutdown 
+description ## managment ip ##
+ do sh run   ===> to see the description ..............................................
+ ip default-gateway 10.10.10.1 ===> this is the  ROUTER IP ..........................
+ sh ip int br
+ ping IP
+
+
+
+
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&& WE HAVE 4 TYPES OF MEMORY WITH CISCO $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+ROM    ######### PERMANENT MEMORY #####
+FLASH  ######### PERMANENT MEMORY ##### 
+NVRAM  ######### PERMANENT MEMORY #####
+
+RAM  **** VOLATIVE, CONTENTS ARE LOST WHEN DEVICE POVER OFF *** 
+
+
+
+
+show flash
+
+
+@@@@@@@@@@@        ROUTING  PROTOCOLS CONFIGURATION      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+RIP CONFIGURATION ###################
+
+- router rip
+version 2
+no auto-sammury
+network 10.0.0.0
+
+
+do sh ip route 
+debug ip rip
+crt+c
+undebug all
+do sh ip protocols
+
+do sh int br 
+do sh run | sec route
+do sh run | sec rip
+do sh ip rip database
+
+
+
+FOR PRACTICE RIP - V1
+
+router rip
+network 10.0.0.0
+no auto-summary
+
+
+
+conf t
+no router ospf 1
+
+
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+OSPF CONFIGURATION  #####################
+
+- en
+conf terminal
+router ospf 1
+network 10.0.0.0 0.255.255.255 area 0   --- CLASSA/8
+network 10.0.0.0 0.0.0.255 area 0      --- CLASS-C/24 to use this
+-
+-   CONFIGURE ROUTER ID
+    it's the highest ip , loopback is prefered
+R1( config-router)# router-id 192.168.1.1
+R1# sh ip protocols
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+-  CONFIGURE PASSIVE INTERFACE
+   LOOKBACK INTERFACE MUST BE PASSIVE INTERFACE
+
+   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+to avoid sending LSA to external LAN
+R1( config) router ospf 1
+R1( config-router)# passive-interface f0/1
+R1( config-router)#passive-interface lookback 0
+
+OR 
+
+conf t
+router ospf 1
+passive-interface loopback 0
+
+R11
+conf t
+router ospf 1
+network 172.0.1.1 0.0.0.0 area 0
+network 172.2.2.1 0.0.0.0 area 0
+network 172.6.6.1 0.0.0.0 area 0
+
+R22
+conf t
+router ospf 1
+network 172.3.3.1 0.0.0.0 area 0
+network 172.2.2.2 0.0.0.0 area 0
+
+
+
+R33
+conf t
+router ospf 1
+network 172.4.4.1 0.0.0.0 area 0
+network 172.6.6.2 0.0.0.0 area 0
+
+
+
+R44
+conf t
+router ospf 1
+network 172.3.3.1 0.0.0.0 area 0
+network 172.4.4.2 0.0.0.0 area 0
+network 172.5.5.1 0.0.0.0 area 0
+
+
+
+
+R1(config)#router ospf 1
+R1(config-router)#passive-interface default
+R1(config-router)#no passive-interface f0/0
+R1(config-router)#no passive-interface f1/0
+R1(config-router)#no passive-interface f3/0
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+- CONFIGURE DEFAULT ROUTE IN ALL YOU OSPF ROUTERS WITH FEW CMD
+  DO IT ON THE ROUTER FACING THE NETWORK
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+R4(config)#ip route 0.0.0.0 0.0.0.0 203.0.113.2
+R4(config)#router ospf 1
+R4(config-router)#default-information originate
+
+HOW TO MANIPULATE THE HELLO-TIMER IN OSPF
+==> THE DEFAULT IS 10, 
+==> THE SAME NUMBER MUST BE SET AT THE BOTH SIDE OF THE LINK,
+==> OR IT WILL SHOOT OSPF DOWN
+
+int g0/0
+ip ospf hello-interval 7
+
+
+
+-CONFIGURE AREA IN OSPF 
+area0 is the backbone,
+R4(config)# router ospf1
+R4(config-router)# network 10.0.0.0 0.0.255.255 area0 
+
+
+
+--  HOW TO SUMMANRIZE  IN OSPF 
+
+--  ABRs do not automatically summarize
+--  If you do not configure summarization, all routes are flooded everywhere
+
+R2(config)#router ospf 1
+R2(config-router)#network 10.1.0.0 0.0.255.255 area 0
+R2(config-router)#network 10.0.0.0 0.0.255.255 area 1
+R2(config-router)#area 0 range 10.1.0.0 255.255.0.0
+R2(config-router)#area 1 range 10.0.0.0 255.255.0.0
+
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+HOW WE SOLVE THE PROBLEM????
+THERE WAS A IP MISCONFIGURATION
+- command we run 
+- cdp run   on each router
+- do sh ip route 
+- do sh run | sec ospf
+and  - ping the lookback ip from the same router
+
+do sh ip protocols
+do sh ip ospf data
+
+
+
+conf t
+no router ospf 2
+do sh int f0/0 | inc bw
+do sh int f0/0
+do sh ip protocols
+int f0/0
+bandwidth 10000     ++. to manipulate the bandwidth 
+do show cdp neighbors
+sh protocols  ==> Will show the real status of all your protocols if up or down
+very good for troubleshooting, and quit problem solving habits
+
+####################
+EIGRP CONFIGURATION 
+####################
+
+router eigrp 100
+no auto-summary
+net 10.0.0.0 0.255.255.255 
+passive-interface ( any interface that you want to make inactive example g0/2)
+
+
+router eigrp 100
+network 192.168.0.0 0.0.0.255
+int l0
+
+
+
+
+
+
+
+AD (Administrative Distance  ) explanations
+
+
+
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+*Mar 01, 10:20:33.2020: 10:20:33: OSPF: Rcv hello from 192.168.0.2 area 0 from FastEthernet0/1 10.1.0.2
+*Mar 01, 10:20:33.2020: 10:20:33: OSPF: End of hello processing
+R3(config)#do u 
+*Mar 01, 10:20:40.2020: 10:20:40: OSPF: Rcv hello from 192.168.0.4 area 0 from FastEthernet0/0 10.1.1.1
+*Mar 01, 10:20:40.2020: 10:20:40: OSPF: Mismatched hello parameters from 10.1.1.1
+*Mar 01, 10:20:40.2020: 10:20:40: OSPF: Dead R 40 C 40 Hello R 10 C 8 Mask R 255.255.255.0 C 255.255.255.0
+
+
+
+
+
+
+
+
+do clear ip ospf process
+
+################################
+interface Loopback0
+ip address 192.168.0.2 255.255.255.255
+
+
+
+
+conf t
+no interface loopback0
+
+
+
+
+
+
+
+
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!####################$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+HOW TO CONFIGURE LOOKBACK IP INTERFACE ?
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!   
+
+
+R1(config-router)#router ospf 1
+R1(config-router)#router-id 2.2.2.2
+
+======
+
+R1(config)#router ospf 1
+R1(config-router)#passive-interface loopback 0
+R1(config-router)#passive-interface f2/0
+
+or 
+
+R1(config)#router ospf 1
+R1(config-router)#passive-interface default
+R1(config-router)#no passive-interface f0/0
+R1(config-router)#no passive-interface f1/0
+R1(config-router)#no passive-interface f3/0
+
+======
+
+R4(config)#ip route 0.0.0.0 0.0.0.0 203.0.113.2
+R4(config)#router ospf 1
+R4(config-router)#default-information originate
+
+
+
+%%%%%%%%%%%% HOW TO RECONFIGURE OSPF %%%%%%%%%%%%%%%%%%%%%%%%%%% AFTER NO ROUTER OSPF 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+R1 CONFIG
+ip ospf cost 2000
+router ospf 1
+ log-adjacency-changes
+ network 10.0.0.1 0.0.0.0 area 1
+ network 10.0.1.1 0.0.0.0 area 1
+ network 10.0.2.1 0.0.0.0 area 1
+ network 10.0.3.1 0.0.0.0 area 1
+ network 192.168.1.1 0.0.0.0 area 1
+ default-information originate
+
+R2 CONFIG
+router ospf 1
+ log-adjacency-changes
+ area 0 range 10.1.0.0 255.255.0.0
+ area 1 range 10.0.0.0 255.255.0.0
+ area 0 range 192.168.0.0 255.255.0.0
+ area 1 range 192.168.1.0 255.255.255.0
+ network 10.1.0.2 0.0.0.0 area 0
+ network 192.168.0.2 0.0.0.0 area 0
+ network 10.0.0.2 0.0.0.0 area 1
+R2#
+
+R3 CONFIG
+router ospf 1
+ log-adjacency-changes
+ network 10.1.0.1 0.0.0.0 area 0
+ network 10.1.1.2 0.0.0.0 area 0
+ network 192.168.0.3 0.0.0.0 area 0
+
+R4 CONFIG
+ ip ospf cost 2000
+router ospf 1
+ log-adjacency-changes
+ passive-interface FastEthernet1/1
+ network 10.1.1.1 0.0.0.0 area 0
+ network 10.1.2.1 0.0.0.0 area 0
+ network 10.1.3.1 0.0.0.0 area 0
+ network 203.0.113.1 0.0.0.0 area 0
+ network 192.168.0.4 0.0.0.0 area 0
+
+R5 CONFIG
+
+
+router ospf 1
+ log-adjacency-changes
+ area 0 range 10.1.0.0 255.255.0.0
+ area 1 range 10.0.0.0 255.255.0.0
+ area 0 range 192.168.0.0 255.255.0.0
+ area 1 range 192.168.1.0 255.255.255.0
+ network 10.1.3.2 0.0.0.0 area 0
+ network 192.168.0.5 0.0.0.0 area 0
+ network 10.0.3.2 0.0.0.0 area 1
+
+
+ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+ VPN CONFIGURATION     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+
+1. Networking Fundamentals
+Understanding of IP addressing and subnetting
+Knowledge of OSI and TCP/IP models
+Routing and switching fundamentals
+Ethernet, VLANs, and Trunking
+IPv4 and IPv6 addressing
+
+
+2. Routing and Switching
+Configuring and troubleshooting routers and switches
+Static routing, dynamic routing protocols (e.g., OSPF, EIGRP)
+Inter-VLAN routing
+Spanning Tree Protocol (STP)
+Layer 2 and Layer 3 switching
+
+
+3. Network Security
+Access Control Lists (ACLs)
+Basic network security measures (firewalls, VPNs)
+Secure device access (SSH, passwords, encryption)
+
+
+4. Network Automation and Programmability
+Understanding of Software Defined Networking (SDN)
+Basic concepts of network automation
+Introduction to APIs and protocols (e.g., REST APIs)
+
+
+5. WAN Technologies
+WAN connectivity (Ethernet, Frame Relay, MPLS, VPN)
+Knowledge of broadband technologies (DSL, Cable)
+
+
+6. Wireless Networking
+Basic wireless LAN setup and configuration
+Understanding of wireless principles (802.11 standards)
+
+
+7. Infrastructure Services
+DHCP, DNS, and NAT
+Network Time Protocol (NTP)
+Quality of Service (QoS)
+
+
+8. Troubleshooting
+Network diagnostics and troubleshooting methodologies
+Tools: ping, traceroute, Telnet, and others
+
+
+9. Network Design
+Basic network topology design and planning
+Redundancy and high availability (e.g., HSRP, VRRP)
+You can list these skills under a "Technical Skills" section or integrate them into your job experience descriptions.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
