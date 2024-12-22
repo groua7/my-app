@@ -3,103 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Welcome to the Super Big Lab web app. Explore, learn, and grow with us.">
-    <meta name="keywords" content="Super Big Lab, CCIE, technology, learning, networking, IT">
-    <meta name="author" content="Your Name">
-    <title>Welcome to Super Big Lab</title>
+    <title>Super Big Lab - Innovative IT Solutions</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #e8f4fc; /* Light blue background */
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             color: #333;
-            overflow: hidden;
-        }
-        .container {
-            text-align: center;
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            animation: fadeIn 2s ease-in-out;
-        }
-        h1 {
-            font-size: 2.5em;
-            color: #0078D7;
-            animation: pulse 1.5s infinite;
-        }
-        p {
-            font-size: 1.2em;
-            animation: slideUp 2s ease;
-        }
-        a {
-            display: inline-block;
-            text-decoration: none;
-            color: #0078D7;
-            font-weight: bold;
-            padding: 10px 20px;
-            border: 2px solid #0078D7;
-            border-radius: 5px;
-            transition: all 0.3s ease-in-out;
-        }
-        a:hover {
-            background-color: #0078D7;
-            color: #fff;
-            transform: scale(1.1);
         }
 
-        /* Animations */
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
+        /* Navigation Bar */
+        .navbar {
+            background-color: #0056b3; /* Vibrant blue */
+            overflow: hidden;
+            padding: 10px 0;
         }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: #fff;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-weight: bold;
         }
-        @keyframes slideUp {
-            0% { opacity: 0; transform: translateY(30px); }
-            100% { opacity: 1; transform: translateY(0); }
+
+        .navbar a:hover {
+            background-color: #003d80; /* Darker blue */
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px;
+            background-color: #003d80; 
+            background-image: url('tech-banner.jpg'); /* Placeholder image */
+            background-size: cover;
+            background-position: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 50px;
+            margin: 0;
+        }
+
+        .hero p {
+            font-size: 22px;
+            margin-top: 10px;
+        }
+
+        /* Main Content Sections */
+        .section {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .section h2 {
+            color: #0056b3;
+            font-size: 36px;
+        }
+
+        .section p {
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            font-size: 18px;
+        }
+
+        ul li {
+            margin: 10px 0;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #0056b3;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to Super Big Lab!</h1>
-        <p>Your go-to platform for networking, technology, and personal growth.</p>
-        <p>Explore our resources and begin your journey with us today.</p>
-        <a id="getStarted" href="#">Get Started</a>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <a href="#" class="logo">Super Big Lab</a>
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
     </div>
 
-    <script>
-        // Get the link element
-        const getStartedBtn = document.getElementById('getStarted');
+    <!-- Hero Section -->
+    <div class="hero" id="home">
+        <h1>Welcome to Super Big Lab</h1>
+        <p>Your Partner in Advanced IT and Networking Solutions</p>
+    </div>
 
-        // Add click event to the button
-        getStartedBtn.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default link behavior
+    <!-- Services Section -->
+    <div class="section" id="services">
+        <h2>Our Expert Services</h2>
+        <p>Explore our comprehensive range of services designed to meet the needs of businesses and IT professionals:</p>
+        <ul>
+            <li>🔹 **Network Design and Implementation** – Custom solutions to ensure robust and scalable networks.</li>
+            <li>🔹 **Cybersecurity Solutions** – Protect your infrastructure with advanced security protocols.</li>
+            <li>🔹 **Cloud Integration and Management** – Seamlessly transition to and manage cloud-based systems.</li>
+            <li>🔹 **Data Center Optimization** – Efficiently manage resources and reduce operational costs.</li>
+            <li>🔹 **SD-WAN Deployment** – Improve performance and reduce costs with next-generation networking solutions.</li>
+            <li>🔹 **Wireless Network Configuration** – Enhance connectivity with expertly designed Wi-Fi solutions.</li>
+            <li>🔹 **IT Consulting Services** – Tailored strategies to align IT infrastructure with business goals.</li>
+            <li>🔹 **24/7 Network Monitoring and Support** – Proactive troubleshooting and round-the-clock assistance.</li>
+            <li>🔹 **VoIP Solutions** – Streamline communications with voice-over-IP technologies.</li>
+            <li>🔹 **Disaster Recovery Planning** – Ensure business continuity with fail-safe recovery strategies.</li>
+        </ul>
+    </div>
 
-            // Animate the container for exit effect
-            document.querySelector('.container').style.animation = 'fadeOut 1s forwards';
+    <!-- Contact Section -->
+    <div class="section" id="contact">
+        <h2>Get in Touch</h2>
+        <p>Reach out to us for expert guidance and unparalleled IT solutions. We are here to help you succeed.</p>
+        <p>Email us at: <a href="mailto:info@superbiglab.com">info@superbiglab.com</a></p>
+        <p>Call us at: +1-800-555-1234</p>
+    </div>
 
-            // Redirect to the new page after animation ends
-            setTimeout(function() {
-                window.location.href = 'https://demo.super-big-lab.com';
-            }, 1000); // 1 second delay for the fade-out effect
-        });
-
-        // Exit animation for container
-        const fadeOut = `
-        @keyframes fadeOut {
-            0% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-30px); }
-        }`;
-        document.styleSheets[0].insertRule(fadeOut, 0);
-    </script>
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2024 Super Big Lab - Your Trusted IT Partner</p>
+    </div>
 </body>
 </html>
